@@ -1,2 +1,2 @@
-def run_predict(path_dataset, model):
+def run_predict(args):
     pass

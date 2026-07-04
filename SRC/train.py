@@ -1,2 +1,2 @@
-def run_train(layer, epochs, loss, batch_size, learning_rate):
+def run_train(args):
     pass
