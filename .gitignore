@@ -1,1 +1,18 @@
+# Données générées
+data/data_train.csv
+data/data_valid.csv
+
+# Modèle entraîné
+models/*
+
+# Graphiques
 graph/*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# macOS
+.DS_Store
