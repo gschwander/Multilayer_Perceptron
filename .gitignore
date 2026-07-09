@@ -1,6 +1,7 @@
 # Données générées
 data/data_train.csv
 data/data_valid.csv
+data/seed.txt
 
 # Modèle entraîné
 models/*
