@@ -30,3 +30,7 @@ def run_split(args):
 
     train_df.to_csv("data/data_train.csv", index=False)
     test_df.to_csv("data/data_valid.csv", index=False)
+    with open("data/seed.txt", "w") as f:
+        f.write(str(args.seed))
+    print(f"> saving data_train.csv to disk...")
+    print(f"> saving data_valid.csv to disk...")

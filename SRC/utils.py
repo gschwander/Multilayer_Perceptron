@@ -20,6 +20,8 @@ def forward_pass(X, weight, biases):
 
 
 def graph_loss_acc(train_loss, train_acc, valid_loss, valid_acc):
+    os.makedirs("graph", exist_ok=True)
+
     plt.figure()
     plt.plot(train_loss, label="train")
     plt.plot(valid_loss, label="validation")
@@ -57,6 +59,7 @@ def binary_cross_entropy(y_true, p_pred):
 
 
 def save_metrics(train_loss, train_acc, valid_loss, valid_acc, path='models/metrics.csv'):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     df = pd.DataFrame({
         'train_loss': train_loss,
         'valid_loss': valid_loss,

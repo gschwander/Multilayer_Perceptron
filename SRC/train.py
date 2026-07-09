@@ -14,8 +14,9 @@ def load_data(args):
 
     X_train_mean = X_train.mean(axis=0)
     X_train_std = X_train.std(axis=0)
-    X_train_norm = ((X_train - X_train_mean) / X_train_std).values
-    X_valid_norm = ((X_valid - X_train_mean) / X_train_std).values
+    X_train_std_safe = X_train_std.where(X_train_std != 0, 1e-8)
+    X_train_norm = ((X_train - X_train_mean) / X_train_std_safe).values
+    X_valid_norm = ((X_valid - X_train_mean) / X_train_std_safe).values
 
     return X_train_norm, y_train, X_valid_norm, y_valid, X_train_mean.values, X_train_std.values
 
@@ -47,13 +48,14 @@ def forward_backward(X_batch, y_batch, weight, biases, learning_rate):
     y_onehot = np.eye(2)[y_batch]
     dW_list = []
     db_list = []
+    batch_size = X_batch.shape[0]
 
     dZ = A - y_onehot
 
     for i in reversed(range(len(weight))):
         A_prev = Acti[i]
-        dW = A_prev.T @ dZ
-        db = np.sum(dZ, axis=0)
+        dW = (A_prev.T @ dZ) / batch_size
+        db = np.sum(dZ, axis=0) / batch_size
 
         dW_list.insert(0, dW)
         db_list.insert(0, db)
@@ -87,6 +89,14 @@ def run_train(args):
     except FileNotFoundError as e:
         print(f"Error: {e.filename} not found. Run the 'split' command first.")
         return
+
+    try:
+        with open("data/seed.txt") as f:
+            seed = int(f.read())
+    except FileNotFoundError:
+        print("Error: data/seed.txt not found. Run the 'split' command first.")
+        return
+    np.random.seed(seed)
 
     weight, biases, layer_size = init_network(X_train.shape[1], args.layer)
 
